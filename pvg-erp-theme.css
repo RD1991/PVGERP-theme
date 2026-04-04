@@ -1135,6 +1135,7 @@ textarea.pvg-form-control      { resize: vertical; min-height: 90px; }
   object-fit: cover;
   background: #fff;
   margin-bottom: 24px;
+  /* Logo: assets/logos/pvgcoet-icon-180.jpg */
 }
 
 .pvg-auth-page__brand h1 {

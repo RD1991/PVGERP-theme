@@ -13,6 +13,8 @@ Built from brand colours, logo and typography extracted directly from [pvgcoet.a
 | `pvg-erp-theme.css` | **All styles** — design tokens, layout, components, utilities |
 | `pvg-erp-theme.js` | **All interactivity** — sidebar, modal, toast, notifications, validation |
 | `pvg-erp-theme.html` | Live demo / kitchen-sink showing every component |
+| `assets/logos/pvgcoet-icon-180.jpg` | Square 180×180 logo — sidebar circle, app icon |
+| `assets/logos/pvgcoet-logo.jpg` | Horizontal wordmark 520×103 — headers, documents |
 
 ---
 
@@ -83,7 +85,7 @@ Every module page should use this layout skeleton:
 ```html
 <aside class="pvg-sidebar">
   <div class="pvg-sidebar__brand">
-    <img class="pvg-sidebar__logo" src="..." alt="PVG Logo" />
+    <img class="pvg-sidebar__logo" src="assets/logos/pvgcoet-icon-180.jpg" alt="PVG Logo" />
     <div class="pvg-sidebar__brand-text">
       <h2>PVG COET&M</h2>
       <span>Module Name</span>          <!-- change per module -->
