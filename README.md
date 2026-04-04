@@ -10,7 +10,14 @@ Brand colours, fonts and logos live in per-college config files — the core the
 ```
 ├── erp-theme.css              ← Generic theme (styles, design tokens, components)
 ├── erp-theme.js               ← Generic JS (sidebar, modal, toast, validation…)
-├── erp-theme.html             ← Live demo (loads colleges/pvg/config.css by default)
+├── erp-theme.html             ← Kitchen-sink component demo
+│
+├── examples/                  ← ★ Ready-to-run module examples
+│   ├── 01-login.html          ← Auth / login page
+│   ├── 02-dashboard.html      ← Main dashboard with stats, chart, table
+│   ├── 03-admission-form.html ← Multi-step admission form
+│   ├── 04-notifications.html  ← Notification centre
+│   └── README.md              ← How to run & extend examples
 │
 ├── colleges/
 │   ├── pvg/                   ← PVG COET&M, Pune
@@ -60,6 +67,28 @@ Brand colours, fonts and logos live in per-college config files — the core the
 ```
 
 > The Poppins font is loaded inside each college `config.css` via `@import`.
+
+---
+
+## Examples
+
+The [`examples/`](examples/) folder contains four ready-to-run pages covering the most common ERP modules:
+
+| Page | What it shows |
+|------|---------------|
+| [01-login.html](examples/01-login.html) | Role-based login, password toggle, SSO & OTP buttons, form validation |
+| [02-dashboard.html](examples/02-dashboard.html) | Stat cards, enrolment bar chart, dept progress bars, mini calendar, student table, activity log |
+| [03-admission-form.html](examples/03-admission-form.html) | 4-step admission wizard — personal, academic, documents, review + success state |
+| [04-notifications.html](examples/04-notifications.html) | Notification centre with filter tabs, compose modal, unread state, badge counter |
+
+**Run locally from the project root:**
+
+```bash
+python3 -m http.server 8080
+# then open http://localhost:8080/examples/02-dashboard.html
+```
+
+See [`examples/README.md`](examples/README.md) for full usage instructions and a copy-paste layout shell.
 
 ---
 
