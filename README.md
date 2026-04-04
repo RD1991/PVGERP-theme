@@ -1,259 +1,251 @@
-# PVG COET&M — ERP Theme
+# College ERP — Shared UI Theme
 
-Official shared UI theme for **PVG's College of Engineering, Technology and Management, Pune** ERP system.
-
-Built from brand colours, logo and typography extracted directly from [pvgcoet.ac.in](https://www.pvgcoet.ac.in/).
-
----
-
-## Files
-
-| File | Purpose |
-|------|---------|
-| `pvg-erp-theme.css` | **All styles** — design tokens, layout, components, utilities |
-| `pvg-erp-theme.js` | **All interactivity** — sidebar, modal, toast, notifications, validation |
-| `pvg-erp-theme.html` | Live demo / kitchen-sink showing every component |
-| `assets/logos/pvgcoet-icon-180.jpg` | Square 180×180 logo — sidebar circle, app icon |
-| `assets/logos/pvgcoet-logo.jpg` | Horizontal wordmark 520×103 — headers, documents |
+A fully generic, college-agnostic UI theme for engineering college ERP systems.
+Brand colours, fonts and logos live in per-college config files — the core theme files contain zero institution-specific code.
 
 ---
 
-## Quick Start — any module
+## Repository Structure
+
+```
+├── erp-theme.css              ← Generic theme (styles, design tokens, components)
+├── erp-theme.js               ← Generic JS (sidebar, modal, toast, validation…)
+├── erp-theme.html             ← Live demo (loads colleges/pvg/config.css by default)
+│
+├── colleges/
+│   ├── pvg/                   ← PVG COET&M, Pune
+│   │   ├── config.css         ← Brand token overrides (#003A6A navy, Poppins)
+│   │   ├── assets/
+│   │   │   ├── icon-180.jpg   ← Square logo (sidebar circle, app icon)
+│   │   │   └── logo-wordmark.jpg ← Horizontal wordmark
+│   │   └── README.md
+│   │
+│   └── <your-college>/        ← Add new colleges here (see below)
+│       ├── config.css
+│       └── assets/
+│           └── icon-180.jpg
+│
+└── assets/
+    └── logos/                 ← Shared/master logo files
+        ├── pvgcoet-icon-180.jpg
+        ├── pvgcoet-logo.jpg
+        └── README.md
+```
+
+---
+
+## Quick Start — any module page
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Poppins font (required) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome (icons) -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Font Awesome (required for icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- ★ 1. Generic ERP theme -->
+  <link rel="stylesheet" href="erp-theme.css" />
 
-  <!-- ★ PVG ERP Theme -->
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/RD1991/PVGERP-theme/main/pvg-erp-theme.css" />
+  <!-- ★ 2. College-specific config — swap this for each college -->
+  <link rel="stylesheet" href="colleges/pvg/config.css" />
 </head>
 <body>
+  <!-- module HTML using erp-* classes -->
 
-  <!-- your module HTML here -->
-
-  <!-- ★ PVG ERP Theme JS -->
-  <script src="https://raw.githubusercontent.com/RD1991/PVGERP-theme/main/pvg-erp-theme.js"></script>
+  <!-- ★ ERP JS -->
+  <script src="erp-theme.js"></script>
 </body>
 </html>
 ```
 
-> **Tip:** Once deployed to GitHub Pages or a CDN, replace the raw GitHub URLs with the hosted URL. Raw GitHub links are fine for development.
+> The Poppins font is loaded inside each college `config.css` via `@import`.
 
 ---
 
-## Brand Tokens
+## Design Tokens
 
-All values are CSS custom properties on `:root`. Override any token in your module's own stylesheet.
+All values are CSS custom properties on `:root`.  
+Override any token in your `colleges/<name>/config.css`.
 
-```css
-:root {
-  --pvg-navy:        #003A6A;   /* Primary brand — sidebar, headings, buttons */
-  --pvg-navy-dark:   #002650;   /* Hover / active states */
-  --pvg-navy-light:  #004e8f;   /* Gradient end, avatar backgrounds */
-  --pvg-dark:        #2D2D2D;   /* Body text, secondary button */
-  --pvg-blue-mid:    #72acdc;   /* Active sidebar border, info colour */
-  --pvg-surface:     #f4f6f9;   /* Page background */
-  --pvg-card:        #ffffff;   /* Card / panel background */
-  --pvg-border:      #d9dee6;   /* Default borders */
-  --pvg-text:        #444444;   /* Body text */
-  --pvg-text-muted:  #707070;   /* Secondary text */
-  --pvg-success:     #28a745;
-  --pvg-warning:     #ffc107;
-  --pvg-danger:      #f52846;
-  --pvg-info:        #72acdc;
-  --sidebar-w:       260px;
-  --topbar-h:        64px;
-  --radius:          8px;
-}
-```
+| Token | Default | Purpose |
+|-------|---------|---------|
+| `--erp-primary` | `#1a56db` | Sidebar, headings, buttons |
+| `--erp-primary-dark` | `#1241a3` | Hover / active states |
+| `--erp-primary-light` | `#2563eb` | Gradients, avatar backgrounds |
+| `--erp-accent` | `#60a5fa` | Active nav border, info tint |
+| `--erp-dark` | `#2D2D2D` | Body text, secondary button |
+| `--erp-surface` | `#f4f6f9` | Page background |
+| `--erp-card` | `#ffffff` | Card / panel background |
+| `--erp-border` | `#d9dee6` | Default borders |
+| `--erp-text` | `#444444` | Body text |
+| `--erp-text-muted` | `#707070` | Secondary / placeholder text |
+| `--erp-success` | `#28a745` | |
+| `--erp-warning` | `#ffc107` | |
+| `--erp-danger` | `#f52846` | |
+| `--erp-font` | `'Poppins'` | Body / UI font |
+| `--erp-sidebar-w` | `260px` | Sidebar width |
+| `--erp-topbar-h` | `64px` | Topbar height |
 
-Font: **Poppins** (Google Fonts) — weights 300, 400, 500, 600, 700, 800.
+---
+
+## Adding a New College
+
+1. Create the folder:
+   ```
+   colleges/<college-slug>/
+   ├── config.css
+   └── assets/
+       └── icon-180.jpg    (square logo, 180×180)
+   ```
+
+2. In `config.css`, override only the tokens that differ:
+   ```css
+   @import url('https://fonts.googleapis.com/css2?family=YourFont&display=swap');
+
+   :root {
+     --erp-primary:       #YOUR_COLOR;
+     --erp-primary-dark:  #DARKER;
+     --erp-primary-light: #LIGHTER;
+     --erp-accent:        #ACCENT;
+     --erp-font:          'YourFont', sans-serif;
+   }
+   ```
+
+3. In every module page, swap the `<link>` for the college config.  
+   The core `erp-theme.css` and `erp-theme.js` are **never modified**.
 
 ---
 
 ## Layout Shell
 
-Every module page should use this layout skeleton:
-
 ```html
-<aside class="pvg-sidebar">
-  <div class="pvg-sidebar__brand">
-    <img class="pvg-sidebar__logo" src="assets/logos/pvgcoet-icon-180.jpg" alt="PVG Logo" />
-    <div class="pvg-sidebar__brand-text">
-      <h2>PVG COET&M</h2>
-      <span>Module Name</span>          <!-- change per module -->
+<aside class="erp-sidebar">
+  <div class="erp-sidebar__brand">
+    <img class="erp-sidebar__logo" src="colleges/<slug>/assets/icon-180.jpg" alt="Logo" />
+    <div class="erp-sidebar__brand-text">
+      <h2>College Short Name</h2>
+      <span>Module Name</span>
     </div>
   </div>
 
-  <nav class="pvg-sidebar__nav">
-    <div class="pvg-nav-label">Section</div>
-    <a class="pvg-nav-item pvg-nav-item--active" href="/">
+  <nav class="erp-sidebar__nav">
+    <div class="erp-nav-label">Section</div>
+    <a class="erp-nav-item erp-nav-item--active" href="/">
       <i class="fa-solid fa-gauge-high"></i>
-      <span class="pvg-nav-item__text">Dashboard</span>
+      <span class="erp-nav-item__text">Dashboard</span>
     </a>
-    <!-- more items -->
   </nav>
 
-  <div class="pvg-sidebar__footer">
-    <div class="pvg-avatar pvg-avatar--md">AB</div>
-    <div class="pvg-sidebar__user-info">
-      <p>User Name</p>
-      <span>Role</span>
-    </div>
-    <i class="fa-solid fa-right-from-bracket pvg-sidebar__logout"></i>
+  <div class="erp-sidebar__footer">
+    <div class="erp-avatar erp-avatar--md">AB</div>
+    <div class="erp-sidebar__user-info"><p>User Name</p><span>Role</span></div>
+    <i class="fa-solid fa-right-from-bracket erp-sidebar__logout"></i>
   </div>
 </aside>
 
-<header class="pvg-topbar">
-  <button class="pvg-topbar__btn" data-pvg-sidebar-toggle>
+<header class="erp-topbar">
+  <button class="erp-topbar__btn" data-erp-sidebar-toggle>
     <i class="fa-solid fa-bars"></i>
   </button>
-  <!-- breadcrumb, search, actions, profile -->
+  <nav class="erp-topbar__breadcrumb" data-erp-breadcrumb></nav>
+  <!-- search, actions, profile -->
 </header>
 
-<main class="pvg-main" data-pvg-page="Module / Page Name">
+<main class="erp-main" data-erp-page="Module / Page">
   <!-- content -->
 </main>
 ```
 
 ---
 
-## Components
+## Component Reference
 
-### Card
-
+### Cards
 ```html
-<div class="pvg-card">
-  <div class="pvg-card__header">
-    <div>
-      <div class="pvg-card__title">Card Title</div>
-      <div class="pvg-card__subtitle">Supporting text</div>
-    </div>
-    <button class="pvg-card__action">Action <i class="fa-solid fa-arrow-right"></i></button>
+<div class="erp-card">
+  <div class="erp-card__header">
+    <div><div class="erp-card__title">Title</div><div class="erp-card__subtitle">Subtitle</div></div>
+    <button class="erp-card__action">Action <i class="fa-solid fa-arrow-right"></i></button>
   </div>
-  <div class="pvg-card__body">
-    <!-- content -->
-  </div>
+  <div class="erp-card__body"><!-- content --></div>
 </div>
 ```
 
-### Stat Card
-
+### Stat Cards
 ```html
-<div class="pvg-stat-card pvg-stat-card--navy">   <!-- --navy | --success | --warning | --danger -->
-  <div class="pvg-stat-card__header">
-    <div class="pvg-stat-card__icon"><i class="fa-solid fa-users"></i></div>
-    <span class="pvg-stat-card__trend pvg-stat-card__trend--up">+4.2%</span>
+<div class="erp-stat-card erp-stat-card--primary">   <!-- --primary|--success|--warning|--danger -->
+  <div class="erp-stat-card__header">
+    <div class="erp-stat-card__icon"><i class="fa-solid fa-users"></i></div>
+    <span class="erp-stat-card__trend erp-stat-card__trend--up">+4.2%</span>
   </div>
-  <div class="pvg-stat-card__value">2,847</div>
-  <div class="pvg-stat-card__label">Total Students</div>
+  <div class="erp-stat-card__value">2,847</div>
+  <div class="erp-stat-card__label">Total Students</div>
 </div>
 ```
 
 ### Buttons
-
 ```html
-<button class="pvg-btn pvg-btn--primary">Primary</button>
-<button class="pvg-btn pvg-btn--secondary">Secondary</button>
-<button class="pvg-btn pvg-btn--outline">Outline</button>
-<button class="pvg-btn pvg-btn--ghost">Ghost</button>
-<button class="pvg-btn pvg-btn--success">Approve</button>
-<button class="pvg-btn pvg-btn--danger">Reject</button>
-
-<!-- Sizes -->
-<button class="pvg-btn pvg-btn--primary pvg-btn--sm">Small</button>
-<button class="pvg-btn pvg-btn--primary pvg-btn--lg">Large</button>
+<button class="erp-btn erp-btn--primary">Primary</button>
+<button class="erp-btn erp-btn--secondary">Secondary</button>
+<button class="erp-btn erp-btn--outline">Outline</button>
+<button class="erp-btn erp-btn--ghost">Ghost</button>
+<button class="erp-btn erp-btn--success">Approve</button>
+<button class="erp-btn erp-btn--danger">Reject</button>
+<!-- Sizes: erp-btn--sm  erp-btn--lg -->
 ```
 
-### Badges / Pills
-
+### Status Pills & Badges
 ```html
-<!-- Colour badges -->
-<span class="pvg-badge pvg-badge--navy">New</span>
-<span class="pvg-badge pvg-badge--success">Verified</span>
-<span class="pvg-badge pvg-badge--warning">Pending</span>
-<span class="pvg-badge pvg-badge--danger">Overdue</span>
+<span class="erp-pill erp-pill--active">Active</span>
+<span class="erp-pill erp-pill--pending">Pending</span>
+<span class="erp-pill erp-pill--inactive">Inactive</span>
 
-<!-- Status pills (with dot) -->
-<span class="pvg-pill pvg-pill--active">Active</span>
-<span class="pvg-pill pvg-pill--pending">Pending</span>
-<span class="pvg-pill pvg-pill--inactive">Inactive</span>
-
-<!-- Department badges -->
-<span class="pvg-dept pvg-dept--comp">Computer Engineering</span>
-<span class="pvg-dept pvg-dept--mech">Mechanical</span>
-<span class="pvg-dept pvg-dept--elec">Electrical</span>
-<span class="pvg-dept pvg-dept--etc">E&amp;TC</span>
-<span class="pvg-dept pvg-dept--it">IT Engineering</span>
-<span class="pvg-dept pvg-dept--aids">AI &amp; Data Science</span>
-<span class="pvg-dept pvg-dept--mba">MBA</span>
-<span class="pvg-dept pvg-dept--print">Printing &amp; Packaging</span>
+<span class="erp-badge erp-badge--primary">New</span>
+<span class="erp-badge erp-badge--success">Verified</span>
+<span class="erp-badge erp-badge--danger">Overdue</span>
 ```
 
-### Form Controls
-
+### Department Badges
 ```html
-<div class="pvg-form-grid-3">   <!-- or pvg-form-grid-2 / pvg-form-grid-4 -->
-  <div class="pvg-form-group">
-    <label>Label <sup style="color:var(--pvg-danger)">*</sup></label>
-    <input class="pvg-form-control" type="text" placeholder="..." required />
-    <span class="pvg-form-hint">Optional hint text</span>
-  </div>
-  <div class="pvg-form-group">
-    <label>Select</label>
-    <select class="pvg-form-control">
-      <option>Option 1</option>
-    </select>
+<!-- Use --1 through --8 or add your own in config.css -->
+<span class="erp-dept erp-dept--1">Computer Science</span>
+<span class="erp-dept erp-dept--2">Mechanical</span>
+```
+
+### Forms
+```html
+<div class="erp-form-grid-3">
+  <div class="erp-form-group">
+    <label>Name *</label>
+    <input class="erp-form-control" type="text" required />
+    <span class="erp-form-hint">Hint text</span>
   </div>
 </div>
 ```
 
 ### Alerts
-
 ```html
-<div class="pvg-alert pvg-alert--info">    <i class="fa-solid fa-circle-info"></i>    Info message</div>
-<div class="pvg-alert pvg-alert--success"> <i class="fa-solid fa-circle-check"></i>   Success message</div>
-<div class="pvg-alert pvg-alert--warning"> <i class="fa-solid fa-triangle-exclamation"></i> Warning</div>
-<div class="pvg-alert pvg-alert--danger">  <i class="fa-solid fa-circle-xmark"></i>   Error message</div>
-```
-
-### Data Table
-
-```html
-<table class="pvg-table" data-pvg-sortable>
-  <thead><tr><th>Name</th><th>Dept</th><th>Status</th></tr></thead>
-  <tbody>
-    <tr><td>...</td><td>...</td><td>...</td></tr>
-  </tbody>
-</table>
+<div class="erp-alert erp-alert--info">   <i class="fa-solid fa-circle-info"></i>   Info</div>
+<div class="erp-alert erp-alert--success"><i class="fa-solid fa-circle-check"></i>  Success</div>
+<div class="erp-alert erp-alert--warning"><i class="fa-solid fa-triangle-exclamation"></i> Warning</div>
+<div class="erp-alert erp-alert--danger"> <i class="fa-solid fa-circle-xmark"></i>  Error</div>
 ```
 
 ### Modal
-
 ```html
-<!-- Trigger -->
-<button class="pvg-btn pvg-btn--primary" data-pvg-modal-open="myModal">Open</button>
+<button data-erp-modal-open="myModal" class="erp-btn erp-btn--primary">Open</button>
 
-<!-- Modal -->
-<div class="pvg-modal-overlay" id="myModal">
-  <div class="pvg-modal">
-    <div class="pvg-modal__header">
-      <span class="pvg-modal__title">Modal Title</span>
-      <button class="pvg-modal__close" data-pvg-modal-close><i class="fa-solid fa-xmark"></i></button>
+<div class="erp-modal-overlay" id="myModal">
+  <div class="erp-modal">
+    <div class="erp-modal__header">
+      <span class="erp-modal__title">Title</span>
+      <button class="erp-modal__close" data-erp-modal-close><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="pvg-modal__body">
-      <!-- content -->
-    </div>
-    <div class="pvg-modal__footer">
-      <button class="pvg-btn pvg-btn--ghost" data-pvg-modal-close>Cancel</button>
-      <button class="pvg-btn pvg-btn--primary">Confirm</button>
+    <div class="erp-modal__body"><!-- content --></div>
+    <div class="erp-modal__footer">
+      <button class="erp-btn erp-btn--ghost" data-erp-modal-close>Cancel</button>
+      <button class="erp-btn erp-btn--primary">Save</button>
     </div>
   </div>
 </div>
@@ -261,60 +253,61 @@ Every module page should use this layout skeleton:
 
 ---
 
-## JavaScript API (`PVG` global)
+## JavaScript API (`ERP` global)
 
 ```js
-// Toast notification
-PVG.Toast.show('Message text', 'success');   // type: success | danger | warning | info
-PVG.Toast.show('Error!', 'danger', 5000);    // custom duration in ms
+ERP.Toast.show('Saved!', 'success');          // type: success|danger|warning|info
+ERP.Toast.show('Error', 'danger', 5000);      // custom duration ms
 
-// Confirm dialog
-PVG.Confirm.show({
-  title:     'Delete Record',
-  message:   'This cannot be undone.',
-  danger:    true,                           // red confirm button
-  onConfirm: () => { /* do work */ },
-  onCancel:  () => { /* optional */ }
+ERP.Confirm.show({
+  title: 'Delete?', message: 'Cannot be undone.',
+  danger: true,
+  onConfirm: () => { /* … */ }
 });
 
-// Modal (programmatic)
-PVG.Modal.open('myModal');
-PVG.Modal.close('myModal');
+ERP.Modal.open('myModal');
+ERP.Modal.close('myModal');
 
-// Notification badge
-PVG.Notifications.setBadge(5);   // show 5 unread
-PVG.Notifications.setBadge(0);   // clear dot
+ERP.Notifications.setBadge(5);   // set unread count dot
+ERP.Notifications.setBadge(0);   // clear dot
 
-// Form validation
-const valid = PVG.Form.validate(formElement);   // returns true/false
-PVG.Form.clearErrors(formElement);
+ERP.Form.validate(formEl);       // → true / false (marks inline errors)
+ERP.Form.clearErrors(formEl);
 
-// Page loader
-PVG.Loader.show();
-PVG.Loader.hide();
+ERP.Loader.show();
+ERP.Loader.hide();
 
-// Sidebar
-PVG.Sidebar.toggle();
+ERP.Sidebar.toggle();
 ```
+
+### Data Attributes (no JS needed)
+
+| Attribute | Element | Effect |
+|-----------|---------|--------|
+| `data-erp-sidebar-toggle` | `<button>` | Toggles sidebar |
+| `data-erp-modal-open="id"` | `<button>` | Opens modal overlay `#id` |
+| `data-erp-modal-close` | `<button>` | Closes nearest `.erp-modal-overlay` |
+| `data-erp-notif-toggle` | `<button>` | Toggles notification panel |
+| `data-erp-sortable` | `<table>` | Enables click-to-sort columns |
+| `data-erp-page="X / Y"` | `<main>` | Auto-builds breadcrumb |
+| `data-erp-breadcrumb` | `<nav>` | Target for breadcrumb builder |
 
 ---
 
 ## Auth Page Layout
 
-For login / register pages (no sidebar):
-
 ```html
-<div class="pvg-auth-page">
-  <div class="pvg-auth-page__brand">
-    <img src="logo.jpg" alt="PVG Logo" />
-    <h1>PVG COET&M<br>ERP Portal</h1>
-    <p>Empowering education since 1985</p>
+<div class="erp-auth-page">
+  <div class="erp-auth-page__brand">
+    <img src="colleges/<slug>/assets/icon-180.jpg" alt="Logo" />
+    <h1>College Name</h1>
+    <p>Tagline or address</p>
   </div>
-  <div class="pvg-auth-page__form">
-    <div class="pvg-auth-box">
+  <div class="erp-auth-page__form">
+    <div class="erp-auth-box">
       <h2>Sign In</h2>
       <p>Enter your credentials to continue</p>
-      <!-- form -->
+      <!-- form here -->
     </div>
   </div>
 </div>
@@ -322,35 +315,26 @@ For login / register pages (no sidebar):
 
 ---
 
-## Module Integration Checklist
+## Colleges Using This Theme
 
-- [ ] Link `pvg-erp-theme.css` in `<head>`
-- [ ] Link `pvg-erp-theme.js` before `</body>`
-- [ ] Load Poppins from Google Fonts
-- [ ] Load Font Awesome 6.x
-- [ ] Use `pvg-*` class prefix for all themed elements
-- [ ] Set `data-pvg-page="Module / Page"` on `<main>` for breadcrumb auto-build
-- [ ] Add `data-pvg-sidebar-toggle` to hamburger button
-- [ ] Add `data-pvg-sortable` to tables that need column sorting
+| Folder | College | Primary Colour |
+|--------|---------|----------------|
+| `colleges/pvg/` | PVG COET&M, Pune | `#003A6A` |
+| _(add yours)_ | | |
 
 ---
 
-## Modules
+## Module Checklist
 
-| Module | Status |
-|--------|--------|
-| Auth (Login/Register) | 🔲 Planned |
-| Admission | 🔲 Planned |
-| Academics (Courses/Timetable) | 🔲 Planned |
-| Attendance | 🔲 Planned |
-| Examinations | 🔲 Planned |
-| Fees & Finance | 🔲 Planned |
-| Notifications | 🔲 Planned |
-| Hostel | 🔲 Planned |
-| Placements | 🔲 Planned |
+- [ ] `<link>` `erp-theme.css`
+- [ ] `<link>` `colleges/<slug>/config.css`
+- [ ] `<script>` `erp-theme.js` before `</body>`
+- [ ] Set `data-erp-page="Module / Page"` on `<main>`
+- [ ] `data-erp-sidebar-toggle` on hamburger button
+- [ ] `data-erp-breadcrumb` on topbar `<nav>`
 
 ---
 
 ## License
 
-Internal use — PVG's College of Engineering, Technology and Management, Pune.
+Internal use only.
