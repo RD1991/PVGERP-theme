@@ -3,6 +3,26 @@
 A fully generic, college-agnostic UI theme for engineering college ERP systems.
 Brand colours, fonts and logos live in per-college config files — the core theme files contain zero institution-specific code.
 
+[![npm version](https://img.shields.io/npm/v/college-erp-theme)](https://www.npmjs.com/package/college-erp-theme)
+[![license](https://img.shields.io/npm/l/college-erp-theme)](LICENSE)
+
+---
+
+## Install
+
+```bash
+npm install college-erp-theme
+```
+
+Or use directly via CDN (no install needed):
+
+```html
+<!-- Generic theme -->
+<link rel="stylesheet" href="https://unpkg.com/college-erp-theme/erp-theme.css" />
+<link rel="stylesheet" href="https://unpkg.com/college-erp-theme/colleges/pvg/config.css" />
+<script src="https://unpkg.com/college-erp-theme/erp-theme.js"></script>
+```
+
 ---
 
 ## Repository Structure
@@ -43,27 +63,44 @@ Brand colours, fonts and logos live in per-college config files — the core the
 
 ## Quick Start — any module page
 
+**Option A — CDN (no build step)**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Font Awesome (icons) -->
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <!-- ★ 1. Generic ERP theme -->
-  <link rel="stylesheet" href="erp-theme.css" />
+  <link rel="stylesheet" href="https://unpkg.com/college-erp-theme/erp-theme.css" />
 
-  <!-- ★ 2. College-specific config — swap this for each college -->
-  <link rel="stylesheet" href="colleges/pvg/config.css" />
+  <!-- ★ 2. College config — swap slug per college -->
+  <link rel="stylesheet" href="https://unpkg.com/college-erp-theme/colleges/pvg/config.css" />
 </head>
 <body>
   <!-- module HTML using erp-* classes -->
-
-  <!-- ★ ERP JS -->
-  <script src="erp-theme.js"></script>
+  <script src="https://unpkg.com/college-erp-theme/erp-theme.js"></script>
 </body>
 </html>
+```
+
+**Option B — npm + local `node_modules`**
+
+```bash
+npm install college-erp-theme
+```
+
+```html
+<link rel="stylesheet" href="node_modules/college-erp-theme/erp-theme.css" />
+<link rel="stylesheet" href="node_modules/college-erp-theme/colleges/pvg/config.css" />
+<script src="node_modules/college-erp-theme/erp-theme.js"></script>
+```
+
+**Option C — bundler (Vite / webpack)**
+
+```js
+import 'college-erp-theme/css';                        // erp-theme.css
+import 'college-erp-theme/colleges/pvg/config.css';    // PVG branding
 ```
 
 > The Poppins font is loaded inside each college `config.css` via `@import`.
