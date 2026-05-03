@@ -1,35 +1,35 @@
 /*
- * PVG COET&M — College Config
+ * PVG's College of Science & Commerce, Pune — College Config
  *
- * Load this AFTER erp-theme.css to apply PVG's branding.
+ * Load this AFTER erp-theme.css to apply PVGCOSC branding.
  *
- *   <link rel="stylesheet" href="erp-theme.css" />
- *   <link rel="stylesheet" href="colleges/pvg/config.css" />
+ *   <link rel="stylesheet" href="path/to/erp-theme.css" />
+ *   <link rel="stylesheet" href="path/to/colleges/pvg/config.css" />
  *
- * Only override the tokens that differ from the generic defaults.
- * Every other erp-theme.css rule will inherit automatically.
+ * The --erp-college variable is REQUIRED — erp-theme.js will show a
+ * blocking error page if it is missing or empty.
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* ── Brand colours (from pvgcoet.ac.in) ── */
-  --erp-primary:        #003A6A;
-  --erp-primary-dark:   #002650;
-  --erp-primary-light:  #004e8f;
+  /* ── Required: identifies this college to erp-theme.js ── */
+  --erp-college:       "pvg";
+  --erp-college-short: "PVGCOSC";
+  --erp-college-full:  "PVG's College of Science & Commerce, Pune";
+  --erp-college-url:   "https://www.pvgcosc.ac.in";
+
+  /* Paths resolved relative to the HTML page that loads this config */
+  --erp-college-icon:     "colleges/pvg/assets/icon.png";
+  --erp-college-wordmark: "colleges/pvg/assets/logo-wordmark.png";
+
+  /* ── Brand colours (from pvgcosc.ac.in) ── */
+  --erp-primary:        #881f42;
+  --erp-primary-dark:   #6b1634;
+  --erp-primary-light:  #a92755;
   --erp-dark:           #2D2D2D;
-  --erp-accent:         #72acdc;
+  --erp-accent:         #fdb90a;
 
   /* ── Typography ── */
   --erp-font: 'Poppins', sans-serif;
 }
-
-/*
- * College name strings — consumed by JS or server templates.
- * These are CSS custom properties purely for documentation;
- * use data attributes or server-side rendering for actual text.
- */
-/* --college-full:   "PVG's College of Engineering, Technology and Management, Pune"; */
-/* --college-short:  "PVG COET&M"; */
-/* --college-url:    "https://www.pvgcoet.ac.in"; */
-/* --college-logo:   "colleges/pvg/assets/icon-180.jpg"; */

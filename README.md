@@ -54,9 +54,64 @@ Or use directly via CDN (no install needed):
 │
 └── assets/
     └── logos/                 ← Shared/master logo files
-        ├── pvgcoet-icon-180.jpg
-        ├── pvgcoet-logo.jpg
+        ├── pvgcosc.png            ← PVG CoSC square icon
+        ├── pvgcosc-logo.png       ← PVG CoSC wordmark
         └── README.md
+```
+
+---
+
+## College Configuration — Required
+
+> **Every page must load a college `config.css`. If it is missing, `erp-theme.js` will render a full-page blocking error instead of your app.**
+
+Each college folder under `colleges/<slug>/` must provide a `config.css` that defines at minimum:
+
+```css
+:root {
+  --erp-college:       "pvg";                               /* required slug */
+  --erp-college-short: "PVGCOSC";                           /* short display name */
+  --erp-college-full:  "PVG's College of Science, Pune";    /* full display name */
+  --erp-college-url:   "https://www.pvgcosc.ac.in";
+  --erp-college-icon:     "colleges/pvg/assets/icon.png";   /* square logo path */
+  --erp-college-wordmark: "colleges/pvg/assets/logo-wordmark.png";
+  /* … brand colour overrides … */
+}
+```
+
+`erp-theme.js` reads these at runtime and:
+1. Shows a **blocking error page** if `--erp-college` is empty
+2. Sets `data-erp-college="<slug>"` on `<html>` for CSS targeting
+3. **Auto-injects logos** into `[data-erp-logo]` elements
+4. **Auto-fills names** into `[data-erp-college-name]` elements
+5. Exposes `ERP.College.data` for use in module JS
+
+### Logo & name placeholders (no hardcoding needed)
+
+```html
+<!-- sidebar icon (square) -->
+<img class="erp-sidebar__logo" data-erp-logo="icon" alt="Logo" />
+
+<!-- full wordmark -->
+<img data-erp-logo="wordmark" alt="College Logo" />
+
+<!-- short name, e.g. "PVGCOSC" -->
+<h2 data-erp-college-name="short"></h2>
+
+<!-- full name, e.g. "PVG's College of Science & Commerce, Pune" -->
+<p data-erp-college-name="full"></p>
+```
+
+### JavaScript API
+
+```js
+// Available after DOMContentLoaded
+ERP.College.data.slug     // 'pvg'
+ERP.College.data.short    // 'PVGCOSC'
+ERP.College.data.full     // "PVG's College of Science & Commerce, Pune"
+ERP.College.data.url      // 'https://www.pvgcosc.ac.in'
+ERP.College.data.icon     // 'colleges/pvg/assets/icon.png'
+ERP.College.data.wordmark // 'colleges/pvg/assets/logo-wordmark.png'
 ```
 
 ---
@@ -157,19 +212,34 @@ Override any token in your `colleges/<name>/config.css`.
 
 ## Adding a New College
 
-1. Create the folder:
+1. **Create the folder structure:**
    ```
    colleges/<college-slug>/
    ├── config.css
+   ├── README.md
    └── assets/
-       └── icon-180.jpg    (square logo, 180×180)
+       ├── icon.png          ← square logo (180×180 recommended)
+       └── logo-wordmark.png ← horizontal wordmark
+   ```
+   Tip: put master files in `assets/logos/` and symlink from here:
+   ```bash
+   ln -sf ../../../assets/logos/<file>.png colleges/<slug>/assets/icon.png
    ```
 
-2. In `config.css`, override only the tokens that differ:
+2. **Write `config.css`** — the required `--erp-college` variables plus brand overrides:
    ```css
    @import url('https://fonts.googleapis.com/css2?family=YourFont&display=swap');
 
    :root {
+     /* ── Required ── */
+     --erp-college:       "your-slug";
+     --erp-college-short: "SHORT NAME";
+     --erp-college-full:  "Full College Name, City";
+     --erp-college-url:   "https://college.ac.in";
+     --erp-college-icon:     "colleges/your-slug/assets/icon.png";
+     --erp-college-wordmark: "colleges/your-slug/assets/logo-wordmark.png";
+
+     /* ── Brand colours ── */
      --erp-primary:       #YOUR_COLOR;
      --erp-primary-dark:  #DARKER;
      --erp-primary-light: #LIGHTER;
@@ -178,19 +248,25 @@ Override any token in your `colleges/<name>/config.css`.
    }
    ```
 
-3. In every module page, swap the `<link>` for the college config.  
-   The core `erp-theme.css` and `erp-theme.js` are **never modified**.
+3. **Load the config** in every module page (after `erp-theme.css`, before `erp-theme.js`):
+   ```html
+   <link rel="stylesheet" href="erp-theme.css" />
+   <link rel="stylesheet" href="colleges/your-slug/config.css" />
+   <script src="erp-theme.js"></script>
+   ```
 
----
+4. Use `data-erp-logo` and `data-erp-college-name` — **never hardcode** logo paths or college names in HTML.
 
 ## Layout Shell
 
 ```html
 <aside class="erp-sidebar">
   <div class="erp-sidebar__brand">
-    <img class="erp-sidebar__logo" src="colleges/<slug>/assets/icon-180.jpg" alt="Logo" />
+    <!-- src is set automatically from --erp-college-icon in config.css -->
+    <img class="erp-sidebar__logo" data-erp-logo="icon" alt="Logo" />
     <div class="erp-sidebar__brand-text">
-      <h2>College Short Name</h2>
+      <!-- text is set automatically from --erp-college-short in config.css -->
+      <h2 data-erp-college-name="short"></h2>
       <span>Module Name</span>
     </div>
   </div>

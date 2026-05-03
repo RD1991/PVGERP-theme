@@ -1,42 +1,52 @@
-# PVG COET&M — College Configuration
+# PVG — College Config
 
-This folder contains everything specific to PVG's College of Engineering, Technology and Management, Pune.
-The generic ERP theme files (`erp-theme.css`, `erp-theme.js`) have no PVG-specific code.
+College: **PVG's College of Science & Commerce, Pune**  
+Website: https://www.pvgcosc.ac.in  
+Slug: `pvg`
 
-## Folder Contents
-
-```
-colleges/pvg/
-├── config.css           ← PVG brand tokens (colours, font)
-├── assets/
-│   ├── icon-180.jpg     ← 180×180 square logo (symlink → assets/logos/)
-│   └── logo-wordmark.jpg← 520×103 horizontal wordmark (symlink → assets/logos/)
-└── README.md
-```
-
-## How to Add a New College
-
-1. Create `colleges/<college-slug>/`
-2. Copy `colleges/pvg/config.css` → override only the tokens that differ
-3. Add the college logo as `colleges/<college-slug>/assets/icon-180.jpg`
-4. In every module page, swap the config link:
-
-```html
-<!-- was: <link rel="stylesheet" href="colleges/pvg/config.css" /> -->
-<link rel="stylesheet" href="colleges/abc-college/config.css" />
-```
-
-That's it — `erp-theme.css` and `erp-theme.js` are untouched.
-
-## PVG Brand Reference
+## Brand
 
 | Token | Value | Notes |
 |-------|-------|-------|
-| `--erp-primary` | `#003A6A` | Deep navy blue — sidebar, headings, buttons |
-| `--erp-primary-dark` | `#002650` | Hover / active states |
-| `--erp-primary-light` | `#004e8f` | Gradient fill, avatar bg |
-| `--erp-accent` | `#72acdc` | Active sidebar border, info tint |
-| `--erp-dark` | `#2D2D2D` | Body text, secondary button |
-| `--erp-font` | `'Poppins'` | Google Fonts |
+| `--erp-primary` | `#881f42` | Deep rose / maroon |
+| `--erp-primary-dark` | `#6b1634` | Hover / active |
+| `--erp-primary-light` | `#a92755` | Gradient tint |
+| `--erp-accent` | `#fdb90a` | Golden yellow highlight |
+| `--erp-font` | Poppins | Loaded via Google Fonts |
 
-Source: [pvgcoet.ac.in](https://www.pvgcoet.ac.in/)
+## Assets
+
+| File | Source | Usage |
+|------|--------|-------|
+| `assets/icon.png` | `assets/logos/pvgcosc.png` | Sidebar circle, app icon |
+| `assets/logo-wordmark.png` | `assets/logos/pvgcosc-logo.png` | Top branding bar |
+
+Both are symlinks into `assets/logos/` at the repo root.
+
+## Required CSS variables
+
+Every `config.css` **must** define `--erp-college`. Without it `erp-theme.js` shows a blocking error page.
+
+| Variable | This college's value |
+|----------|---------------------|
+| `--erp-college` | `"pvg"` |
+| `--erp-college-short` | `"PVGCOSC"` |
+| `--erp-college-full` | `"PVG's College of Science & Commerce, Pune"` |
+| `--erp-college-icon` | `"colleges/pvg/assets/icon.png"` |
+| `--erp-college-wordmark` | `"colleges/pvg/assets/logo-wordmark.png"` |
+
+## Usage
+
+```html
+<link rel="stylesheet" href="path/to/erp-theme.css" />
+<link rel="stylesheet" href="path/to/colleges/pvg/config.css" />
+<script src="path/to/erp-theme.js"></script>
+```
+
+Logos and names are injected automatically — no hardcoded paths in HTML:
+
+```html
+<img class="erp-sidebar__logo" data-erp-logo="icon" alt="Logo" />
+<h2 data-erp-college-name="short"></h2>   <!-- renders: PVGCOSC -->
+<p  data-erp-college-name="full"></p>     <!-- renders: PVG's College of… -->
+```

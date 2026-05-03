@@ -66,18 +66,17 @@
 
   <!-- ══ Brand Panel ══ -->
   <div class="erp-auth-page__brand" style="position:relative">
-    <img src="../colleges/pvg/assets/icon-180.jpg" alt="College Logo"
-         onerror="this.style.display='none'" />
-    <h1>PVG's College of<br>Engineering, Technology<br>and Management</h1>
+    <img data-erp-logo="icon" alt="College Logo" />
+    <h1 data-erp-college-name="full"></h1>
     <p>ERP Portal — Unified platform for students,<br>faculty and administration.</p>
 
     <div class="brand-stats">
-      <div class="brand-stat"><strong>2,847</strong><span>Students</span></div>
-      <div class="brand-stat"><strong>148</strong><span>Faculty</span></div>
-      <div class="brand-stat"><strong>9</strong><span>Departments</span></div>
+      <div class="brand-stat"><strong>1,500+</strong><span>Students</span></div>
+      <div class="brand-stat"><strong>50+</strong><span>Faculty &amp; Staff</span></div>
+      <div class="brand-stat"><strong>10</strong><span>Programmes</span></div>
     </div>
 
-    <span class="back-to-top">pvgcoet.ac.in</span>
+    <span class="back-to-top" id="collegeUrl"></span>
   </div>
 
   <!-- ══ Form Panel ══ -->
@@ -165,6 +164,12 @@
 
 <script src="../erp-theme.js"></script>
 <script>
+  // Populate college URL footer once ERP.College.data is available
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('collegeUrl');
+    if (el && ERP.College.data) el.textContent = ERP.College.data.url.replace('https://', '');
+  });
+
   function setRole(btn) {
     document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');

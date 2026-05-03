@@ -413,9 +413,134 @@
   };
 
   /* ─────────────────────────────────────────────────────────
+     COLLEGE — read config vars, guard against missing config
+  ───────────────────────────────────────────────────────── */
+  ERP.College = {
+    /**
+     * Read a CSS custom property from :root and strip wrapping quotes.
+     * Returns '' if the property is not set.
+     */
+    _css(name) {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(name).trim().replace(/^['"]|['"]$/g, '');
+    },
+
+    /**
+     * Populated during init(). Safe to read after DOMContentLoaded.
+     * {
+     *   slug:     'pvg',
+     *   short:    'PVGCOSC',
+     *   full:     "PVG's College of Science & Commerce, Pune",
+     *   url:      'https://www.pvgcosc.ac.in',
+     *   icon:     'colleges/pvg/assets/icon.png',
+     *   wordmark: 'colleges/pvg/assets/logo-wordmark.png',
+     * }
+     */
+    data: null,
+
+    /**
+     * Check that colleges/<slug>/config.css was loaded.
+     * Shows a full-page blocking error if --erp-college is not defined.
+     * Returns the college slug on success, null on failure.
+     */
+    init() {
+      const slug = this._css('--erp-college');
+
+      if (!slug) {
+        this._showError();
+        return null;
+      }
+
+      this.data = {
+        slug,
+        short:    this._css('--erp-college-short')    || slug.toUpperCase(),
+        full:     this._css('--erp-college-full')     || slug,
+        url:      this._css('--erp-college-url')      || '',
+        icon:     this._css('--erp-college-icon')     || '',
+        wordmark: this._css('--erp-college-wordmark') || '',
+      };
+
+      // Stamp the slug on <html> for CSS targeting
+      document.documentElement.setAttribute('data-erp-college', slug);
+
+      // Auto-inject logos into any <img data-erp-logo="icon|wordmark">
+      this._injectLogos();
+
+      // Auto-fill any [data-erp-college-name] text nodes
+      this._injectNames();
+
+      return slug;
+    },
+
+    _injectLogos() {
+      const { icon, wordmark } = this.data;
+      document.querySelectorAll('[data-erp-logo]').forEach(img => {
+        const type = img.getAttribute('data-erp-logo');
+        if (type === 'icon'     && icon)     img.src = icon;
+        if (type === 'wordmark' && wordmark) img.src = wordmark;
+        if (!img.alt) img.alt = this.data.short + ' logo';
+      });
+    },
+
+    _injectNames() {
+      document.querySelectorAll('[data-erp-college-name]').forEach(el => {
+        const variant = el.getAttribute('data-erp-college-name');
+        el.textContent = variant === 'full' ? this.data.full : this.data.short;
+      });
+    },
+
+    _showError() {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed', 'inset:0', 'z-index:99999',
+        'background:#0f172a', 'color:#e2e8f0',
+        'display:flex', 'align-items:center', 'justify-content:center',
+        'font-family:system-ui,sans-serif', 'padding:32px',
+      ].join(';');
+
+      overlay.innerHTML = `
+        <div style="max-width:520px;text-align:center">
+          <div style="font-size:48px;margin-bottom:16px">🏫</div>
+          <h1 style="font-size:22px;font-weight:700;color:#f87171;margin:0 0 10px">
+            No college configuration loaded
+          </h1>
+          <p style="font-size:14px;color:#94a3b8;line-height:1.7;margin:0 0 24px">
+            Every ERP page must load a college-specific
+            <code style="background:#1e293b;padding:2px 7px;border-radius:4px;color:#fbbf24">config.css</code>
+            <em>after</em>
+            <code style="background:#1e293b;padding:2px 7px;border-radius:4px;color:#fbbf24">erp-theme.css</code>.
+            Without it, branding, logos and the college identity are undefined.
+          </p>
+          <pre style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:left;font-size:12px;line-height:1.8;overflow:auto">&lt;!-- 1. Generic theme --&gt;
+&lt;link rel="stylesheet" href="erp-theme.css" /&gt;
+
+&lt;!-- 2. College config (pick the right folder) --&gt;
+&lt;link rel="stylesheet" href="colleges/pvg/config.css" /&gt;
+
+&lt;!-- 3. Theme JS --&gt;
+&lt;script src="erp-theme.js"&gt;&lt;/script&gt;</pre>
+          <p style="font-size:12px;color:#475569;margin-top:20px">
+            See <strong>colleges/</strong> for available configs or
+            <strong>README.md</strong> to add a new college.
+          </p>
+        </div>`;
+
+      // Render after DOM is ready
+      const render = () => document.body.appendChild(overlay);
+      document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', render)
+        : render();
+    },
+  };
+
+  /* ─────────────────────────────────────────────────────────
      AUTO-INIT
   ───────────────────────────────────────────────────────── */
   function init() {
+    // College guard must run first — aborts gracefully if config is missing
+    const college = ERP.College.init();
+    if (!college) return;
+
     ERP.Sidebar.init();
     ERP.ActiveNav.init();
     ERP.Modal.init();
