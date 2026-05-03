@@ -1,6 +1,6 @@
 {
   "name": "college-erp-theme",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generic, college-agnostic UI theme for engineering college ERP systems. Zero institution-specific code — brand colours, fonts and logos live in per-college config files.",
   "keywords": [
     "erp",

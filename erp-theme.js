@@ -1,6 +1,6 @@
 /**
  * College ERP — Shared Theme JavaScript
- * Version: 1.0.0
+ * Version: 1.1.0
  *
  * Usage:
  *   <script src="erp-theme.js"></script>

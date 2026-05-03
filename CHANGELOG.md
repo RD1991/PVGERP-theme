@@ -5,6 +5,37 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This pr
 
 ---
 
+## [1.1.0] — 2026-05-03
+
+### Added
+- **College identity system** (`ERP.College`) — `erp-theme.js` now reads `--erp-college` from the loaded config; shows a full-page blocking error if no college config is loaded
+  - Auto-injects logos into `[data-erp-logo="icon|wordmark"]` elements
+  - Auto-fills college names into `[data-erp-college-name="short|full"]` elements
+  - Sets `data-erp-college="<slug>"` on `<html>` for CSS targeting
+  - Exposes `ERP.College.data` object for module JS
+- **Semantic colour variants** — each state now ships four tokens:
+  `--erp-{success|warning|danger|info}` + `-bg`, `-text`, `-border`
+- **Component heights** — `--erp-input-h` (38px), `--erp-input-h-sm` (30px), `--erp-input-h-lg` (46px), `--erp-textarea-h` (90px); buttons and inputs share the same height token
+- **Typography scale** — `--erp-text-xs` → `--erp-text-3xl`, font-weight steps (`--erp-fw-*`), line-height steps (`--erp-lh-*`)
+- **Spacing scale** — `--erp-space-1` → `--erp-space-16` (4 px grid, 10 steps)
+- **Z-index layers** — named tokens `--erp-z-dropdown` → `--erp-z-guard`; JS reads them at runtime via `cssInt()`
+- **Shape tokens** — `--erp-radius-xl`, `--erp-radius-full` (pill), `--erp-border-width` / `-md` / `-lg`
+- **Interaction tokens** — `--erp-focus-ring`, `--erp-opacity-muted`
+- **`examples/`** — four ready-to-run module pages: login, dashboard, admission form, notifications
+- **PVGCOSC branding** in `colleges/pvg/` — new logos (pvgcosc.png, pvgcosc-logo.png), rose/maroon palette (`#881f42`)
+
+### Changed
+- `colleges/pvg/config.css` — updated to PVG's College of Science & Commerce branding and added all required `--erp-college-*` variables
+- `.erp-btn` — uses `height: var(--erp-input-h)` instead of vertical padding
+- `.erp-form-control` — uses `height: var(--erp-input-h)` and `--erp-focus-ring`
+- `.erp-alert--*`, `.erp-badge--*`, `.erp-pill--*` — use semantic `-bg` / `-text` / `-border` tokens instead of hardcoded `rgba()` values
+- All `z-index` values in CSS and JS replaced with named layer tokens
+
+### Removed
+- Old COET&M logo assets (`pvgcoet-icon-180.jpg`, `pvgcoet-logo.jpg`) and their dead symlinks
+
+---
+
 ## [1.0.0] — 2026-04-11
 
 ### Added
