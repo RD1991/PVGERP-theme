@@ -1,62 +1,25 @@
-# PVG COET&M — Logo Assets
+# Logo Assets
 
-All official logos sourced from [pvgcoet.ac.in](https://www.pvgcoet.ac.in/).
+Master logo files for all colleges using this ERP theme.  
+Each college's `assets/` folder contains symlinks pointing here.
 
-## Files
+## PVG's College of Science & Commerce, Pune
 
-| File | Dimensions | Use Case |
-|------|-----------|----------|
-| `pvgcoet-logo.jpg` | 520 × 103 px | Page headers, printed documents, email templates |
-| `pvgcoet-icon-180.jpg` | 180 × 180 px | Sidebar circle avatar, app icon, favicon source |
+| File | Dimensions | Usage |
+|------|-----------|-------|
+| `pvgcosc.png` | ~180×180 | Sidebar circle, app icon, favicon base |
+| `pvgcosc-logo.png` | Full width | Horizontal wordmark, branding bar |
 
-## Usage in HTML
+Symlinked from:
+- `colleges/pvg/assets/icon.png` → `pvgcosc.png`
+- `colleges/pvg/assets/logo-wordmark.png` → `pvgcosc-logo.png`
 
-```html
-<!-- Sidebar logo (circle crop via CSS) -->
-<img class="pvg-sidebar__logo"
-     src="assets/logos/pvgcoet-icon-180.jpg"
-     alt="PVG COET&M" />
+## Adding logos for a new college
 
-<!-- Full wordmark (header / login page) -->
-<img src="assets/logos/pvgcoet-logo.jpg"
-     alt="PVG's College of Engineering, Technology and Management, Pune"
-     style="height: 48px; width: auto;" />
-```
-
-## Usage in CSS
-
-```css
-/* As a background image */
-.pvg-brand-header {
-  background-image: url('../assets/logos/pvgcoet-logo.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-```
-
-## CDN / Remote Usage
-
-If your module cannot access the local file path, use the remote URL:
-
-```html
-<!-- Sidebar icon (square, 180×180) -->
-<img src="https://www.pvgcoet.ac.in/wp-content/uploads/2019/06/cropped-pvg-logo-180x180.jpg"
-     alt="PVG Logo" />
-
-<!-- Horizontal wordmark (520×103) -->
-<img src="https://www.pvgcoet.ac.in/wp-content/uploads/2025/07/pvgcoet-logo-v3.jpg"
-     alt="PVG Logo" />
-```
-
-## Adding More Assets
-
-Place additional brand assets in this folder following the naming convention:
-
-```
-pvgcoet-<description>-<WxH>.<ext>
-```
-
-Examples:
-- `pvgcoet-logo-dark-520x103.png`  — dark/inverted wordmark
-- `pvgcoet-icon-512.png`           — high-res app icon
-- `pvg-naac-badge.png`             — NAAC A accreditation badge
+1. Drop the files here: `assets/logos/<slug>-icon.png` and `assets/logos/<slug>-logo.png`
+2. Create symlinks in the college folder:
+   ```bash
+   ln -sf ../../../assets/logos/<slug>-icon.png colleges/<slug>/assets/icon.png
+   ln -sf ../../../assets/logos/<slug>-logo.png colleges/<slug>/assets/logo-wordmark.png
+   ```
+3. Update `--erp-college-icon` and `--erp-college-wordmark` in `colleges/<slug>/config.css`

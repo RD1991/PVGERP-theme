@@ -53,13 +53,9 @@
 <!-- ══════════════════════════════ SIDEBAR ══════════════════════════════ -->
 <aside class="erp-sidebar">
   <div class="erp-sidebar__brand">
-    <!-- Replace src with your college logo -->
-    <img class="erp-sidebar__logo"
-         src="colleges/pvg/assets/icon-180.jpg"
-         alt="College Logo"
-         onerror="this.style.display='none'" />
+    <img class="erp-sidebar__logo" data-erp-logo="icon" alt="College Logo" />
     <div class="erp-sidebar__brand-text">
-      <!-- These strings come from your college config or server-rendered template -->
+      <h2 data-erp-college-name="short"></h2>
       <h2 data-erp-college-short>College ERP</h2>
       <span data-erp-module-name>Portal</span>
     </div>
