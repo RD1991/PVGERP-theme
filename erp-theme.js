@@ -18,6 +18,12 @@
 
   const ERP = {};
 
+  /* Reads a CSS custom property from :root as a number (for z-index, etc.) */
+  function cssInt(name, fallback) {
+    const v = parseInt(getComputedStyle(document.documentElement).getPropertyValue(name));
+    return isNaN(v) ? fallback : v;
+  }
+
   /* ─────────────────────────────────────────────────────────
      SIDEBAR — collapse / expand / mobile drawer
   ───────────────────────────────────────────────────────── */
@@ -67,7 +73,7 @@
       backdrop.id = 'erp-backdrop';
       backdrop.style.cssText = [
         'position:fixed', 'inset:0', 'background:rgba(0,0,0,.45)',
-        'z-index:99', 'opacity:0', 'pointer-events:none',
+        'z-index:' + (cssInt('--erp-z-sidebar', 400) - 1), 'opacity:0', 'pointer-events:none',
         'transition:opacity .22s ease'
       ].join(';');
       backdrop.addEventListener('click', () => this.toggle());
@@ -205,7 +211,7 @@
       this._container.style.cssText = [
         'position:fixed', 'bottom:24px', 'right:24px',
         'display:flex', 'flex-direction:column', 'gap:10px',
-        'z-index:9999', 'pointer-events:none'
+        'z-index:' + cssInt('--erp-z-toast', 9999), 'pointer-events:none'
       ].join(';');
       document.body.appendChild(this._container);
     },
@@ -397,7 +403,8 @@
       this._el = document.createElement('div');
       this._el.style.cssText = [
         'position:fixed', 'inset:0', 'background:rgba(255,255,255,.8)',
-        'display:flex', 'align-items:center', 'justify-content:center', 'z-index:10000'
+        'display:flex', 'align-items:center', 'justify-content:center',
+        'z-index:' + cssInt('--erp-z-loader', 10000)
       ].join(';');
 
       this._el.innerHTML = `
@@ -492,7 +499,7 @@
     _showError() {
       const overlay = document.createElement('div');
       overlay.style.cssText = [
-        'position:fixed', 'inset:0', 'z-index:99999',
+        'position:fixed', 'inset:0', 'z-index:' + cssInt('--erp-z-guard', 99999),
         'background:#0f172a', 'color:#e2e8f0',
         'display:flex', 'align-items:center', 'justify-content:center',
         'font-family:system-ui,sans-serif', 'padding:32px',
